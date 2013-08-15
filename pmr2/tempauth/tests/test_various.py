@@ -56,6 +56,22 @@ class TestUtility(unittest.TestCase):
         result = self.utility.validateAccess(key, self.mock_normal_request)
         self.assertEqual(user, result)
 
+    def test_generate_validate_absolute_path(self):
+        user = 'test_user_1_'
+        key = self.utility.generateAccessFor(user,
+            'http://vhost.example.com/path/obj/')
+
+        result = self.utility.validateAccess(key, self.mock_vhost_request)
+        self.assertEqual(user, result)
+
+    def test_generate_validate_absolute_path_mismatch(self):
+        user = 'test_user_1_'
+        key = self.utility.generateAccessFor(user,
+            'http://vhost.example.com/path/obj/')
+
+        result = self.utility.validateAccess(key, self.mock_normal_request)
+        self.assertNotEqual(user, result)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
