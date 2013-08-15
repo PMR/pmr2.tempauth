@@ -1,7 +1,9 @@
-<configure 
+<configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="pmr2.tempauth">
 
-</configure>
+  <include file="profiles.zcml" />
+  <include file="adapter.zcml" />
+  <include file="browser.zcml" />
 
+</configure>

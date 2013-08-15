@@ -6,15 +6,18 @@ from BTrees.OOBTree import OOBTree
 from zope.annotation import factory
 from zope.container.contained import Contained
 from zope.interface import implementer
-import zope.schema
+from zope.component import adapter
+from zope.schema.fieldproperty import FieldProperty
+from zope.annotation.interfaces import IAttributeAnnotatable
 
 from pmr2.tempauth.interfaces import ITemporaryAuth
 
 
 @implementer(ITemporaryAuth)
+@adapter(IAttributeAnnotatable)
 class TemporaryAuth(Persistent, Contained):
 
-    ttl = zope.schema.fieldproperty.FieldProperty(ITemporaryAuth['ttl'])
+    ttl = FieldProperty(ITemporaryAuth['ttl'])
 
     def __init__(self):
         self._keys = OOBTree()

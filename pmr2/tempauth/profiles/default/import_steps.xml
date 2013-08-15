@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="pmr2_tempauth" version="0.0-0000"
+               handler="pmr2.tempauth.setuphandlers.importVarious"
+               title="TemporaryAuth Plugin">
+  </import-step>
+</import-steps>
