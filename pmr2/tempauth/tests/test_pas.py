@@ -47,6 +47,8 @@ class TestFunctional(ptc.FunctionalTestCase):
             'login': 'test_user_1_',
             'password': key,
             'ACTUAL_URL': 'http://nohost/view',
+            'SERVER_URL': 'http://nohost/',
+            '_temp_auth': True,
         }
 
         result = tempauth.authenticateCredentials(creds)

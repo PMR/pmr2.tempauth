@@ -59,7 +59,9 @@ class TemporaryAuthPlugin(BasePlugin):
         name, password = login_pw
         creds['login'] = name
         creds['password'] = password
+        creds['SERVER_URL'] = request.get('SERVER_URL')
         creds['ACTUAL_URL'] = request.get('ACTUAL_URL')
+        creds['_temp_auth'] = True
         return creds
 
     security.declarePrivate('authenticateCredentials')
@@ -77,7 +79,7 @@ class TemporaryAuthPlugin(BasePlugin):
         # call the utility here
         site = getSite()
         u = getAdapter(site, ITemporaryAuth)
-        userid = u.validateAccess(password, credentials)
+        userid = u.validateByCredentials(password, credentials)
 
         if not userid == login:
             # wrong user, omit.

@@ -45,12 +45,24 @@ class TemporaryAuth(Persistent, Contained):
             # Others will not be removed, figure out how to prune later.
             return None
 
-        if target[:1] == '/':
-            target = request.get('SERVER_URL') + target
+        server_url = request.get('SERVER_URL', '')
+        actual_url = request.get('ACTUAL_URL', '')
 
-        if not request.get('ACTUAL_URL').startswith(target):
+        if target[:1] == '/':
+            target = server_url + target
+
+        if not (actual_url and actual_url.startswith(target)):
             return None
 
         return userid
+
+    def validateByCredentials(self, key, credentials):
+        """
+        For the PAS plugin.
+        """
+
+        if not credentials.get('_temp_auth'):
+            return None
+        return self.validateAccess(key, credentials)
 
 TemporaryAuthFactory = factory(TemporaryAuth)

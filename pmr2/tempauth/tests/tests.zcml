@@ -1,5 +1,13 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="pmr2.tempauth">
+
+  <browser:page
+      for="*"
+      name="request_temporary_password"
+      class="pmr2.tempauth.browser.ContextTempAuthRequestForm"
+      permission="zope2.View"
+      />
 
 </configure>
