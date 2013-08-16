@@ -86,6 +86,9 @@ way to use this is this::
     >>> alt.open(portal_url + '/news/test')
     >>> 'Please ignore' in alt.contents
     True
+    >>> alt.open(portal_url + '/news/reset')
+    >>> 'All the things' in alt.contents
+    True
 
 Naturally, if we replace the timeout with 0, this would effectively
 disable this add-on::
@@ -99,3 +102,29 @@ disable this add-on::
     >>> alt.open(portal_url + '/news/test')
     >>> 'Please ignore' in alt.contents
     False
+    >>> authutil.ttl = 60
+
+Another feature that needs testing is the scope limitation.  If the
+service integrators were to restrict their view declaration to specific
+object types, it can serve as a safeguard against overly broad access
+(i.e. restrict access to the object that clients require protocol level
+access).  Here if we request the token at one specific object::
+
+    >>> view = ContextTempAuthRequestForm(self.portal.news.test, req)
+    >>> creds = json.loads(view())
+    >>> auth = '%(user)s:%(key)s' % creds
+    >>> alt = Browser()
+    >>> alt.addHeader('Authorization', 'Basic %s' % auth.encode('base64'))
+    >>> alt.open(portal_url + '/news/test')
+    >>> 'Please ignore' in alt.contents
+    True
+
+It remains usable for the context it was requested for, and if we try the
+other news item, it will be prohibited::
+
+    >>> alt.open(portal_url + '/news/reset')
+    >>> 'All the things' in alt.contents
+    False
+
+Naturally it is up to the integrators to fine-tune how access is granted
+with the usage of this default view, or their customized views.
